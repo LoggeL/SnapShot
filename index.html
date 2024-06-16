@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LMF SnapShot</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="app-logo">
+        <img src="SnapShotLogo.png" class="" />
+        <h1>SnapShot</h1>
+      </div>
+      <img src="logo.svg" class="lmf-logo" />
+    </nav>
+    <main>
+      <div class="row">
+        <div class="controls">
+          <h2>Controls</h2>
+          <!-- Timer Slider with divs -->
+          <div class="timer-slider">
+            <div class="timer-slider__label">
+              Timer
+              <span id="timer-value">0</span>s
+            </div>
+            <div class="timer-slider__container">
+              <div class="timer-slider__bar">
+                <div class="timer-slider__progress"></div>
+              </div>
+              <div class="timer-slider__thumb"></div>
+            </div>
+          </div>
+          <button id="start">Start Camera</button>
+          <button id="stop">Stop Camera</button>
+          <button id="clear">Clear Photos</button>
+        </div>
+        <div class="camera">
+          <video id="video" autoplay></video>
+          <div id="image-preview" class="image-preview"></div>
+          <button id="capture">Capture</button>
+          <div id="timer"></div>
+        </div>
+        <div class="filters">
+          <h2>Filters</h2>
+          <div class="filter" id="filter0" data-filter="none">
+            <span>None</span>
+          </div>
+          <div class="filter" id="filter1" data-filter="grayscale(100%)">
+            <span> Grayscale </span>
+          </div>
+          <div class="filter" id="filter2" data-filter="sepia(100%)">
+            <span> Sepia </span>
+          </div>
+          <div class="filter" id="filter3" data-filter="invert(100%)">
+            <span> Invert </span>
+          </div>
+          <div class="filter" id="filter4" data-filter="brightness(200%)">
+            <span> Brightness </span>
+          </div>
+          <div class="filter" id="filter5" data-filter="contrast(200%)">
+            <span> Contrast </span>
+          </div>
+          <div class="filter" id="filter6" data-filter="saturate(200%)">
+            <span> Saturate </span>
+          </div>
+          <div class="filter" id="filter7" data-filter="blur(5px)">
+            <span> Blur </span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery">
+        <h2>Photo Gallery</h2>
+        <div id="photos"></div>
+      </div>
+    </main>
+    <!-- Script to stop anyone from viewing the page that is not on localhost or 127.0.0.1 -->
+    <script>
+      if (
+        location.hostname !== 'localhost' &&
+        location.hostname !== '127.0.0.1'
+      ) {
+        location.href = 'https://youtu.be/dQw4w9WgXcQ'
+      }
+    </script>
+    <script src="face-api.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
