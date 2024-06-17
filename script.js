@@ -114,22 +114,29 @@ function takePhoto() {
 
   // Preview photo on hover
   photoContainer.addEventListener('mouseover', () => {
-    photoContainer.style.scale = 1.1
+    photoContainer.style.outline = '2px solid red'
     video.style.display = 'none'
     imagePreview.style.display = 'block'
     imagePreview.style.backgroundImage = `url(${img.src})`
   })
 
   photoContainer.addEventListener('mouseout', () => {
-    photoContainer.style.scale = 1
+    photoContainer.style.outline = 'none'
     video.style.display = 'block'
     imagePreview.style.display = 'none'
     imagePreview.style.backgroundImage = 'none'
   })
 
   // Add photo to gallery
-  photosContainer.appendChild(photoContainer)
+  photosContainer.prepend(photoContainer)
 }
+
+// Take photo with spacebar
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    takePhoto()
+  }
+})
 
 document.addEventListener('DOMContentLoaded', function () {
   const sliderContainer = document.querySelector('.timer-slider__container')
@@ -206,4 +213,13 @@ document.addEventListener('DOMContentLoaded', function () {
       this.classList.add('active')
     })
   })
+})
+
+// scroll horizontally on #photos with the scroll wheel
+const photos = document.getElementById('photos')
+
+photos.addEventListener('wheel', function (e) {
+  e.preventDefault()
+  photos.scrollLeft += e.deltaY
+  console.log(e.deltaY)
 })

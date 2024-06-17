@@ -33,7 +33,9 @@
           </div>
           <button id="start">Start Camera</button>
           <button id="stop">Stop Camera</button>
-          <button id="clear">Clear Photos</button>
+          <button id="clear" onclick="photosContainer.innerHTML = ''">
+            Clear Photos
+          </button>
         </div>
         <div class="camera">
           <video id="video" autoplay></video>
@@ -70,7 +72,6 @@
         </div>
       </div>
       <div class="gallery">
-        <h2>Photo Gallery</h2>
         <div id="photos"></div>
       </div>
     </main>
