@@ -65,6 +65,11 @@ captureButton.addEventListener('click', () => {
 })
 
 function takePhoto() {
+  // if the video is not ready, return
+  if (video.videoWidth === 0 || video.videoHeight === 0) {
+    return
+  }
+
   const canvas = document.createElement('canvas')
   canvas.width = video.videoWidth
   canvas.height = video.videoHeight
@@ -76,60 +81,146 @@ function takePhoto() {
   if (filter) {
     context.filter = filter.getAttribute('data-filter')
     context.drawImage(video, 0, 0, canvas.width, canvas.height)
-    console.log(filter.style.filter)
   }
 
-  // Create photo element
-  const photoContainer = document.createElement('div')
-  photoContainer.classList.add('photo')
-  const img = document.createElement('img')
-  img.src = canvas.toDataURL('image/png')
-  photoContainer.appendChild(img)
-
-  const buttonsContainer = document.createElement('div')
-  buttonsContainer.classList.add('buttons')
-
-  // Create download button
-  const downloadButton = document.createElement('button')
-  downloadButton.classList.add('download')
-  downloadButton.innerHTML = '<img src="download.svg" />'
-  downloadButton.addEventListener('click', () => {
-    const link = document.createElement('a')
-    link.href = img.src
-    link.download = 'photo.png'
-    link.click()
+  // Post image to server
+  fetch('/photos', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      photo: canvas.toDataURL('image/png'),
+    }),
   })
-  buttonsContainer.appendChild(downloadButton)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data)
 
-  // Create delete button
-  const deleteButton = document.createElement('button')
-  deleteButton.classList.add('delete')
-  deleteButton.innerHTML = '<img src="delete.svg" />'
-  deleteButton.addEventListener('click', () => {
-    photoContainer.remove()
-  })
-  buttonsContainer.appendChild(deleteButton)
+      // Create photo element
+      const photoContainer = document.createElement('div')
+      photoContainer.classList.add('photo')
+      const img = document.createElement('img')
+      img.src = data.path
+      photoContainer.appendChild(img)
 
-  photoContainer.appendChild(buttonsContainer)
+      const buttonsContainer = document.createElement('div')
+      buttonsContainer.classList.add('buttons')
 
-  // Preview photo on hover
-  photoContainer.addEventListener('mouseover', () => {
-    photoContainer.style.outline = '2px solid red'
-    video.style.display = 'none'
-    imagePreview.style.display = 'block'
-    imagePreview.style.backgroundImage = `url(${img.src})`
-  })
+      // Create download button
+      const downloadButton = document.createElement('button')
+      downloadButton.classList.add('download')
+      downloadButton.innerHTML = '<img src="download.svg" />'
+      downloadButton.addEventListener('click', () => {
+        const link = document.createElement('a')
+        link.href = img.src
+        link.download = 'photo.png'
+        link.click()
+      })
+      buttonsContainer.appendChild(downloadButton)
 
-  photoContainer.addEventListener('mouseout', () => {
-    photoContainer.style.outline = 'none'
-    video.style.display = 'block'
-    imagePreview.style.display = 'none'
-    imagePreview.style.backgroundImage = 'none'
-  })
+      // Create delete button
+      const deleteButton = document.createElement('button')
+      deleteButton.classList.add('delete')
+      deleteButton.innerHTML = '<img src="delete.svg" />'
+      deleteButton.addEventListener('click', () => {
+        fetch(`/photos/${data.path.split('/').pop()}`, {
+          method: 'DELETE',
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data)
+            photoContainer.remove()
+          })
+      })
+      buttonsContainer.appendChild(deleteButton)
 
-  // Add photo to gallery
-  photosContainer.prepend(photoContainer)
+      photoContainer.appendChild(buttonsContainer)
+
+      // Preview photo on hover
+      photoContainer.addEventListener('mouseover', () => {
+        photoContainer.style.outline = '2px solid red'
+        video.style.display = 'none'
+        imagePreview.style.display = 'block'
+        imagePreview.style.backgroundImage = `url(${img.src})`
+      })
+
+      photoContainer.addEventListener('mouseout', () => {
+        photoContainer.style.outline = 'none'
+        video.style.display = 'block'
+        imagePreview.style.display = 'none'
+        imagePreview.style.backgroundImage = 'none'
+      })
+
+      // Add photo to gallery
+      photosContainer.prepend(photoContainer)
+    })
 }
+
+// Initalize the gallery
+fetch('/photos')
+  .then((res) => res.json())
+  .then((data) => {
+    data.forEach((filename) => {
+      // Create photo element
+      const photoContainer = document.createElement('div')
+      photoContainer.classList.add('photo')
+      const img = document.createElement('img')
+      img.src = `/photos/${filename}`
+      photoContainer.appendChild(img)
+
+      const buttonsContainer = document.createElement('div')
+      buttonsContainer.classList.add('buttons')
+
+      // Create download button
+      const downloadButton = document.createElement('button')
+      downloadButton.classList.add('download')
+      downloadButton.innerHTML = '<img src="download.svg" />'
+      downloadButton.addEventListener('click', () => {
+        const link = document.createElement('a')
+        link.href = img.src
+        link.download = 'photo.png'
+        link.click()
+      })
+      buttonsContainer.appendChild(downloadButton)
+
+      // Create delete button
+      const deleteButton = document.createElement('button')
+      deleteButton.classList.add('delete')
+      deleteButton.innerHTML = '<img src="delete.svg" />'
+      deleteButton.addEventListener('click', () => {
+        fetch(`/photos/${filename}`, {
+          method: 'DELETE',
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data)
+            photoContainer.remove()
+          })
+      })
+      buttonsContainer.appendChild(deleteButton)
+
+      photoContainer.appendChild(buttonsContainer)
+
+      // Preview photo on hover
+      photoContainer.addEventListener('mouseover', () => {
+        photoContainer.style.outline = '2px solid red'
+        video.style.display = 'none'
+        imagePreview.style.display = 'block'
+        imagePreview.style.backgroundImage = `url(${img.src})`
+      })
+
+      photoContainer.addEventListener('mouseout', () => {
+        photoContainer.style.outline = 'none'
+        video.style.display = 'block'
+        imagePreview.style.display = 'none'
+        imagePreview.style.backgroundImage = 'none'
+      })
+
+      // Add photo to gallery
+      photosContainer.prepend(photoContainer)
+    })
+  })
 
 // Take photo with spacebar
 document.addEventListener('keydown', (e) => {
@@ -221,5 +312,4 @@ const photos = document.getElementById('photos')
 photos.addEventListener('wheel', function (e) {
   e.preventDefault()
   photos.scrollLeft += e.deltaY
-  console.log(e.deltaY)
 })

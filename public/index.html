@@ -31,8 +31,7 @@
               <div class="timer-slider__thumb"></div>
             </div>
           </div>
-          <button id="start">Start Camera</button>
-          <button id="stop">Stop Camera</button>
+
           <button id="clear" onclick="photosContainer.innerHTML = ''">
             Clear Photos
           </button>
@@ -68,6 +67,14 @@
           </div>
           <div class="filter" id="filter7" data-filter="blur(5px)">
             <span> Blur </span>
+          </div>
+          <!-- all -->
+          <div
+            class="filter"
+            id="filter8"
+            data-filter="grayscale(100%) sepia(100%) invert(100%) brightness(200%) contrast(200%) saturate(200%)"
+          >
+            <span> All </span>
           </div>
         </div>
       </div>
