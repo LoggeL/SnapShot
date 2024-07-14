@@ -83,6 +83,13 @@ function takePhoto() {
     context.drawImage(video, 0, 0, canvas.width, canvas.height)
   }
 
+  // Flash effect
+  const flashOverlay = document.getElementById('flashOverlay')
+  flashOverlay.style.opacity = 1
+  setTimeout(() => {
+    flashOverlay.style.opacity = 0
+  }, 300)
+
   // Post image to server
   fetch('/photos', {
     method: 'POST',
@@ -103,39 +110,6 @@ function takePhoto() {
       const img = document.createElement('img')
       img.src = data.path
       photoContainer.appendChild(img)
-
-      const buttonsContainer = document.createElement('div')
-      buttonsContainer.classList.add('buttons')
-
-      // Create download button
-      const downloadButton = document.createElement('button')
-      downloadButton.classList.add('download')
-      downloadButton.innerHTML = '<img src="download.svg" />'
-      downloadButton.addEventListener('click', () => {
-        const link = document.createElement('a')
-        link.href = img.src
-        link.download = 'photo.png'
-        link.click()
-      })
-      buttonsContainer.appendChild(downloadButton)
-
-      // Create delete button
-      const deleteButton = document.createElement('button')
-      deleteButton.classList.add('delete')
-      deleteButton.innerHTML = '<img src="delete.svg" />'
-      deleteButton.addEventListener('click', () => {
-        fetch(`/photos/${data.path.split('/').pop()}`, {
-          method: 'DELETE',
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data)
-            photoContainer.remove()
-          })
-      })
-      buttonsContainer.appendChild(deleteButton)
-
-      photoContainer.appendChild(buttonsContainer)
 
       // Preview photo on hover
       photoContainer.addEventListener('mouseover', () => {
@@ -168,39 +142,6 @@ fetch('/photos')
       const img = document.createElement('img')
       img.src = `/photos/${filename}`
       photoContainer.appendChild(img)
-
-      const buttonsContainer = document.createElement('div')
-      buttonsContainer.classList.add('buttons')
-
-      // Create download button
-      const downloadButton = document.createElement('button')
-      downloadButton.classList.add('download')
-      downloadButton.innerHTML = '<img src="download.svg" />'
-      downloadButton.addEventListener('click', () => {
-        const link = document.createElement('a')
-        link.href = img.src
-        link.download = 'photo.png'
-        link.click()
-      })
-      buttonsContainer.appendChild(downloadButton)
-
-      // Create delete button
-      const deleteButton = document.createElement('button')
-      deleteButton.classList.add('delete')
-      deleteButton.innerHTML = '<img src="delete.svg" />'
-      deleteButton.addEventListener('click', () => {
-        fetch(`/photos/${filename}`, {
-          method: 'DELETE',
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data)
-            photoContainer.remove()
-          })
-      })
-      buttonsContainer.appendChild(deleteButton)
-
-      photoContainer.appendChild(buttonsContainer)
 
       // Preview photo on hover
       photoContainer.addEventListener('mouseover', () => {

@@ -2,6 +2,9 @@ const express = require('express')
 const fs = require('fs')
 const path = require('path')
 const bodyParser = require('body-parser')
+const axios = require('axios')
+const FormData = require('form-data')
+require('dotenv').config()
 
 const app = express()
 const port = 3000
@@ -53,7 +56,7 @@ app.post('/photos', (req, res) => {
   const filePath = path.join(photosDirectory, filename)
 
   // Write the file to the filesystem
-  fs.writeFile(filePath, dataBuffer, (err) => {
+  fs.writeFile(filePath, dataBuffer, async (err) => {
     if (err) {
       console.log(err)
       return res.status(500).json({ error: 'Error saving photo' })
@@ -62,6 +65,76 @@ app.post('/photos', (req, res) => {
       message: `Photo saved: ${filename}`,
       path: `./photos/${filename}`,
     })
+
+    // Upload the photo to the cloud
+    const stats = fs.statSync(filePath)
+
+    const data = {
+      deviceAssetId: `${filename}-${stats.mtime}`,
+      deviceId: 'nodejs',
+      fileCreatedAt: new Date(stats.mtime),
+      fileModifiedAt: new Date(stats.mtime),
+      isFavorite: 'false',
+    }
+
+    const formData = new FormData()
+
+    // Append the file
+    formData.append('assetData', fs.createReadStream(filePath))
+
+    // Append additional data fields as strings
+    formData.append('deviceAssetId', data.deviceAssetId)
+    formData.append('deviceId', data.deviceId)
+    // Convert dates to ISO string format
+    formData.append('fileCreatedAt', data.fileCreatedAt.toISOString())
+    formData.append('fileModifiedAt', data.fileModifiedAt.toISOString())
+    formData.append('isFavorite', data.isFavorite)
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${process.env.IMMICH_BASE_URL}/assets`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+        'x-api-key': process.env.IMMICH_API_KEY,
+        ...formData.getHeaders(),
+      },
+      data: formData,
+    }
+
+    const response = await axios.request(config)
+    // .then((response) => {
+    //   console.log(JSON.stringify(response.data))
+    // })
+    // .catch((error) => {
+    //   console.log(error)
+    // })
+
+    console.log(response.data)
+
+    // Add the photo to an album
+    const albumId = process.env.IMMICH_ALBUM_ID
+
+    let pictureData = JSON.stringify({
+      ids: [response.data.id],
+    })
+
+    let albumConfig = {
+      method: 'put',
+      maxBodyLength: Infinity,
+      url: `${process.env.IMMICH_BASE_URL}/albums/${process.env.IMMICH_ALBUM_ID}/assets`,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'x-api-key': process.env.IMMICH_API_KEY,
+      },
+      data: pictureData,
+    }
+
+    const albumResponse = await axios.request(albumConfig)
+
+    console.log(albumResponse.data)
   })
 })
 

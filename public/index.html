@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div id="flashOverlay"></div>
     <nav>
       <div class="app-logo">
         <img src="SnapShotLogo.png" class="" />
@@ -35,6 +36,12 @@
           <button id="clear" onclick="photosContainer.innerHTML = ''">
             Clear Photos
           </button>
+
+          <!-- QR Code for Gallery -->
+          <div class="qr-code">
+            <img src="qr-code.svg" alt="QR Code" />
+            <p>Gallery</p>
+          </div>
         </div>
         <div class="camera">
           <video id="video" autoplay></video>
@@ -55,26 +62,6 @@
           </div>
           <div class="filter" id="filter3" data-filter="invert(100%)">
             <span> Invert </span>
-          </div>
-          <div class="filter" id="filter4" data-filter="brightness(200%)">
-            <span> Brightness </span>
-          </div>
-          <div class="filter" id="filter5" data-filter="contrast(200%)">
-            <span> Contrast </span>
-          </div>
-          <div class="filter" id="filter6" data-filter="saturate(200%)">
-            <span> Saturate </span>
-          </div>
-          <div class="filter" id="filter7" data-filter="blur(5px)">
-            <span> Blur </span>
-          </div>
-          <!-- all -->
-          <div
-            class="filter"
-            id="filter8"
-            data-filter="grayscale(100%) sepia(100%) invert(100%) brightness(200%) contrast(200%) saturate(200%)"
-          >
-            <span> All </span>
           </div>
         </div>
       </div>
