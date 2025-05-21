@@ -1,10 +1,13 @@
+/* Terminal Style Theme for SnapShot */
+
+/* Basic Reset & Body */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+  font-family: 'Lucida Console', 'Courier New', monospace;
+  background-color: #1e1e1e; /* Dark background */
+  color: #d4d4d4; /* Light grey text */
   margin: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column; /* For nav and main content */
   height: 100vh;
   overflow: hidden;
 }
@@ -15,373 +18,403 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: white;
+  background-color: #c0c0c0; /* Light flash for contrast */
   opacity: 0;
   pointer-events: none;
-  z-index: 100;
-  transition: opacity 0.3s ease;
+  z-index: 10000; /* Highest z-index */
+  transition: opacity 0.1s ease;
 }
 
 #flashOverlay.active {
-  opacity: 1;
-  pointer-events: all;
+  opacity: 0.8; /* Slightly transparent flash */
 }
 
-.qr-code img,
-.qr-code {
-  width: 100%;
-  height: 100%;
-}
-
+/* Navigation Bar */
 nav {
-  position: fixed;
-  top: 0;
-  left: 0;
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space out logo and app name/LMF logo */
+  align-items: center;
+  padding: 0 20px;
+  background-color: #101010; /* Slightly darker than body */
+  border-bottom: 1px solid #333; /* Separator line */
+  height: 60px; /* Fixed height */
+  box-sizing: border-box;
   width: 100%;
-  background-color: #172539;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-}
-
-main {
-  width: 100%;
-  height: calc(100vh - 70px);
-  margin: 0;
-  padding: 0;
-  background-color: white;
-  bottom: 0;
-  position: absolute;
-}
-
-.lmf-logo {
-  width: 50px;
-  height: 50px;
-  margin: 10px 20px;
-  position: absolute;
-  right: 0;
-  top: 0;
+  flex-shrink: 0; /* Prevent nav from shrinking */
 }
 
 .app-logo {
   display: flex;
   align-items: center;
-  padding: 0px 20px;
-  justify-content: center;
-}
-
-.app-logo h1 {
-  color: white;
-  font-size: 24px;
-  margin: 0;
 }
 
 .app-logo img {
-  width: 50px;
-  height: 50px;
-  display: block;
-  margin: 10px;
+  width: 40px; /* Adjusted size */
+  height: 40px;
+  margin-right: 10px;
 }
 
-.row {
-  display: grid;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-  /* 3 cols */
-  grid-template-columns: repeat(4, 1fr);
+.app-logo h1 {
+  color: #00ff00; /* Green text for "SnapShot" */
+  font-size: 22px;
+  margin: 0;
+  font-weight: bold;
 }
 
-/* Different column items */
-.controls {
+.lmf-logo {
+  width: 40px; /* Adjusted size */
+  height: 40px;
+  /* Remove absolute positioning, rely on flexbox */
+}
+
+/* Main Content Area */
+main {
   display: flex;
-  gap: 10px;
-  margin: 10px;
+  flex-grow: 1; /* Takes remaining vertical space */
+  padding: 10px;
+  gap: 10px; /* Space between panels */
+  overflow: hidden; /* Prevent main scrollbars */
+  background-color: #1e1e1e; /* Ensure consistency */
+  /* height: calc(100vh - 60px); Full height minus nav - handled by flex-grow */
+  box-sizing: border-box;
+  padding-bottom: 190px; /* Gallery height + some padding */
+}
+
+/* Panel Styling (Controls, Camera, Filters) */
+section.controls-panel,
+section.camera-module,
+section.filters-panel {
+  background-color: #252526; /* Slightly lighter than body */
+  border: 1px solid #333;
+  padding: 15px;
+  box-sizing: border-box;
+  display: flex;
   flex-direction: column;
+  gap: 10px;
+  height: 100%; /* Make panels take full height of the flex container (main) */
 }
 
-.controls button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 30px;
+section.controls-panel {
+  width: 250px; /* Fixed width for controls */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+section.camera-module {
+  flex-grow: 1; /* Takes most of the space */
+  align-items: center; /* Center camera elements */
+  position: relative; /* For absolute positioning of capture button/timer */
+}
+
+section.filters-panel {
+  width: 280px; /* Fixed width for filters */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Headings within panels */
+section.controls-panel h2,
+section.filters-panel h2 {
+  color: #569cd6; /* Light blue for headings */
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5px;
+  flex-shrink: 0; /* Prevent heading from shrinking */
+}
+
+/* Controls Panel Elements */
+.controls-panel button {
+  padding: 8px 12px;
+  font-size: 14px;
+  font-family: inherit; /* Monospace */
+  border: 1px solid #444;
+  background-color: #333;
+  color: #ccc;
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
-  transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.controls button:hover {
-  background-color: #0056b3;
-  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.6);
-  transform: translateY(-5px);
+.controls-panel button:hover {
+  background-color: #45a049; /* Green hover for primary actions */
+  color: #fff;
 }
 
-.controls button:disabled {
-  background-color: #6c757d;
+.controls-panel button:disabled {
+  background-color: #555;
+  color: #888;
   cursor: not-allowed;
+  border-color: #666;
 }
 
-.controls button:disabled:hover {
-  background-color: #6c757d;
-  box-shadow: none;
-  transform: none;
-}
-
-.controls button:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
+/* Timer Slider */
 .timer-slider {
   display: flex;
   flex-direction: column;
   margin: 10px 0;
+  flex-shrink: 0; /* Prevent slider from shrinking */
 }
 
 .timer-slider__label {
-  font-size: 16px;
-  margin-bottom: 5px;
-  color: #333;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #ccc;
+}
+
+.timer-slider__label #timer-value {
+  color: #00ff00; /* Green for timer value */
+  font-weight: bold;
 }
 
 .timer-slider__container {
   position: relative;
-  height: 15px;
-  background-color: #ddd;
-  border-radius: 5px;
+  height: 10px; /* Slimmer slider */
+  background-color: #101010; /* Dark track */
+  border: 1px solid #333;
   cursor: pointer;
 }
 
-.timer-slider__bar {
+.timer-slider__bar { /* Progress */
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  background-color: #4caf50;
-  border-radius: 5px;
+  background-color: #45a049; /* Green progress */
 }
 
 .timer-slider__thumb {
   position: absolute;
-  top: -5px;
-  right: 0;
-  width: 20px;
-  height: 20px;
-  background-color: #fff;
-  border: 2px solid #4caf50;
-  border-radius: 50%;
+  top: -3px; /* Adjust for slimmer bar */
+  width: 16px; /* Smaller thumb */
+  height: 16px;
+  background-color: #d4d4d4; /* Light thumb */
+  border: 1px solid #1e1e1e; /* Border to match background */
+  border-radius: 0; /* Square thumb */
   cursor: pointer;
+  transform: translateX(-50%); /* Center thumb */
 }
 
-.camera {
-  display: flex;
-  position: relative;
-  gap: 10px;
-  margin: 10px;
-  flex-direction: column;
-  grid-column: span 2;
+/* QR Code */
+.qr-code {
+  background-color: #fff; /* White background for QR code visibility */
+  padding: 10px;
+  border: 1px solid #333;
+  margin-top: auto; /* Push to bottom of controls panel */
+  flex-shrink: 0; /* Prevent QR code from shrinking */
 }
 
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 10px;
-}
-
-.filters h2 {
+.qr-code img {
   width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  display: block;
 }
 
-.filters .filter {
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  margin: 8px;
-}
-
-.filters .filter img {
-  height: 100px;
-  width: 100px;
-  border-radius: 10px;
-  position: absolute;
-  left: 0;
-  z-index: 0;
-}
-
-.filters .filter span {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+.qr-code p {
+  color: #1e1e1e; /* Dark text on white background */
   text-align: center;
-  border-radius: 0 0 10px 10px;
-  z-index: 1;
+  margin: 5px 0 0 0;
+  font-size: 12px;
 }
 
-.filters .filter.active {
-  outline: 2px solid #007bff;
-}
-
-.filters .filter:hover {
-  transform: scale(1.1);
-}
-
-#video {
-  border-radius: 10px;
+/* Camera Module Elements */
+#video, #image-preview {
   width: 100%;
-  object-fit: cover;
-  border: 1px red solid;
-  background-color: grey;
+  max-width: 720px; /* Max width for camera feed */
   aspect-ratio: 4/3;
+  background-color: #000; /* Black background for video area */
+  border: 1px solid #333;
+  object-fit: cover;
+  flex-shrink: 0; /* Prevent video from shrinking if space is tight */
 }
 
 #image-preview {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 4/3;
-  background-size: cover;
+  display: none; /* Initially hidden */
+  background-size: contain; /* Ensure whole image is visible */
+  background-repeat: no-repeat;
   background-position: center;
-  display: none;
-  border-radius: 10px;
-  border: 1px red solid;
 }
 
 #capture {
-  padding: 10px 20px;
-  position: absolute;
-  width: 100%;
-  display: block;
-  bottom: 0;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 0 0 10px 10px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-family: inherit;
+  border: 1px solid #444;
+  background-color: #c9302c; /* Red for capture (like a record button) */
+  color: #fff;
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
-  transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
-  text-align: center;
-  font-size: 16px;
-  margin: 0;
+  transition: background-color 0.2s ease;
+  width: calc(100% - 0px); /* Adjusted to be closer to video width within its padding */
+  max-width: 720px; 
+  box-sizing: border-box;
+  margin-top: 10px;
+  flex-shrink: 0; /* Prevent button from shrinking */
 }
 
 #capture:hover {
-  background-color: #0056b3;
-  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.6);
-}
-
-#capture:active {
-  box-shadow: none;
+  background-color: #ac2925; /* Darker red */
 }
 
 #capture:disabled {
-  background-color: #6c757d;
+  background-color: #555;
+  color: #888;
   cursor: not-allowed;
+  border-color: #666;
 }
 
-#timer {
+#timer { /* Timer progress bar on capture button/video */
   position: absolute;
-  bottom: 0px;
-  width: 0%;
-  background-color: red;
-  height: 10px;
-  border-radius: 0 0 0 10px;
+  bottom: 10px; /* Position relative to camera-module's padding */
+  left: 15px; /* Align with camera-module's padding */
+  right: 15px; /* Align with camera-module's padding */
+  width: calc(100% - 30px); /* Span across, considering padding */
+  max-width: calc(720px - 30px); /* Max width considering padding */
+  height: 5px;
+  background-color: #00ff00; /* Green progress */
+  z-index: 10;
+  transform: scaleX(0); /* Initial width 0, use transform for animation */
+  transform-origin: left;
+  transition: transform 0.1s linear;
 }
 
-.gallery {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 10px;
+
+/* Filters Panel Elements */
+section.filters-panel {
+  align-items: center; /* Center filter items */
+  overflow-y: auto; /* Allow scrolling if filters exceed height */
+}
+
+.filters-panel .filter {
+  width: 100px;
+  height: 100px; /* Keep square */
+  border: 1px solid #333;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  position: relative;
+  background-color: #101010; /* Dark background for filter preview */
+  overflow: hidden; /* Ensure span text doesn't overflow */
+  flex-shrink: 0; /* Prevent filters from shrinking */
+  margin-bottom: 10px; /* Space between filters */
+}
+
+.filters-panel .filter:hover {
+  border-color: #00ff00; /* Green border on hover */
+  transform: scale(1.05);
+}
+
+.filters-panel .filter.active {
+  border-color: #569cd6; /* Light blue for active filter */
+  box-shadow: 0 0 5px #569cd6;
+}
+
+.filters-panel .filter span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+  color: #ccc;
+  text-align: center;
+  font-size: 12px;
+  padding: 3px 0;
+  box-sizing: border-box;
+}
+
+/* Gallery Panel (Bottom Strip) */
+section.gallery-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 180px; /* Height for the gallery strip */
+  background-color: #101010; /* Darker background */
+  border-top: 1px solid #333;
+  padding: 10px;
+  box-sizing: border-box;
+  z-index: 900; /* Below nav, above main content if it overlaps */
+  display: flex; /* To align #photos container */
+  align-items: center;
 }
 
 #photos {
-  gap: 10px;
-  justify-items: center;
-  position: absolute;
   display: flex;
-  overflow-x: auto;
-  height: auto;
-  bottom: 0;
+  gap: 10px;
+  overflow-x: auto; /* Horizontal scroll */
+  overflow-y: hidden;
   width: 100%;
-  margin-bottom: 5px;
-  padding-bottom: 5px;
-  padding-top: 5px;
+  height: 100%; /* Fill gallery-panel height */
+  padding-bottom: 10px; /* Space for scrollbar */
 }
 
 .photo {
   position: relative;
+  flex-shrink: 0; /* Prevent photos from shrinking */
+  border: 1px solid #444;
 }
 
 .photo:hover {
   cursor: zoom-in;
+  border-color: #00ff00;
 }
 
 .photo img {
-  width: 150px;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  width: auto; /* Maintain aspect ratio */
+  height: 130px; /* Fixed height for thumbnails */
+  display: block; /* Remove extra space below image */
 }
 
+/* Buttons on photo (Download/Delete) */
 .buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(25, 25, 26, 0.8); /* Semi-transparent dark */
+  display: flex;
+  justify-content: space-around;
+  padding: 2px 0;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.2s ease;
 }
 
-.download {
-  font-size: 12px;
+.photo:hover .buttons {
+  opacity: 1; /* Show on hover */
+}
+
+.buttons button {
+  background: none;
   border: none;
-  background-color: #28a745;
-  color: white;
-  border-radius: 5px;
   cursor: pointer;
+  padding: 3px;
 }
 
-.download:hover {
-  background-color: #218838;
+.buttons img { /* Icons for buttons */
+  width: 18px;
+  height: 18px;
+  filter: invert(80%); /* Make icons light */
 }
 
-.delete {
-  border: none;
-  background-color: #dc3545;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
+.buttons button:hover img {
+  filter: invert(100%) drop-shadow(0 0 3px #00ff00); /* Green glow on hover */
 }
 
-.delete:hover {
-  background-color: #c82333;
+/* Custom Scrollbars for Webkit Browsers (e.g., Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.buttons img {
-  width: 20px;
-  vertical-align: middle;
+::-webkit-scrollbar-track {
+  background: #1e1e1e; /* Dark track */
 }
 
-/* make #photos horizontal scrollbar pretty */
-#photos::-webkit-scrollbar {
-  height: 10px;
+::-webkit-scrollbar-thumb {
+  background: #555; /* Grey thumb */
+  border: 1px solid #1e1e1e; /* Border to match track */
 }
 
-#photos::-webkit-scrollbar-thumb {
-  background-color: #007bff;
-  border-radius: 10px;
-}
-
-#photos::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
+::-webkit-scrollbar-thumb:hover {
+  background: #777; /* Lighter grey on hover */
 }
