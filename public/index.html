@@ -16,10 +16,9 @@
       <img src="logo.svg" class="lmf-logo" />
     </nav>
     <main>
-      <div class="row">
-        <div class="controls">
-          <h2>Controls</h2>
-          <!-- Timer Slider with divs -->
+      <section class="controls-panel">
+        <h2>Controls</h2>
+        <!-- Timer Slider with divs -->
           <div class="timer-slider">
             <div class="timer-slider__label">
               Timer
@@ -42,14 +41,14 @@
             <img src="qr-code.svg" alt="QR Code" />
             <p>Gallery</p>
           </div>
-        </div>
-        <div class="camera">
+        </section>
+        <section class="camera-module">
           <video id="video" autoplay></video>
           <div id="image-preview" class="image-preview"></div>
           <button id="capture">Capture</button>
           <div id="timer"></div>
-        </div>
-        <div class="filters">
+        </section>
+        <section class="filters-panel">
           <h2>Filters</h2>
           <div class="filter" id="filter0" data-filter="none">
             <span>None</span>
@@ -63,21 +62,11 @@
           <div class="filter" id="filter3" data-filter="invert(100%)">
             <span> Invert </span>
           </div>
-        </div>
-      </div>
-      <div class="gallery">
+        </section>
+      <section class="gallery-panel">
         <div id="photos"></div>
-      </div>
+      </section>
     </main>
-    <!-- Script to stop anyone from viewing the page that is not on localhost or 127.0.0.1 -->
-    <script>
-      if (
-        location.hostname !== 'localhost' &&
-        location.hostname !== '127.0.0.1'
-      ) {
-        location.href = 'https://youtu.be/dQw4w9WgXcQ'
-      }
-    </script>
     <script src="face-api.min.js"></script>
     <script src="script.js"></script>
   </body>
