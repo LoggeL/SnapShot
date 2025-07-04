@@ -1,15 +1,20 @@
-/* Terminal Style Theme for SnapShot */
+/* Terminal Style Theme for SnapShot - Optimized for Full HD (1920x1080) */
 
 /* Basic Reset & Body */
-body {
-  font-family: 'Lucida Console', 'Courier New', monospace;
-  background-color: #1e1e1e; /* Dark background */
-  color: #d4d4d4; /* Light grey text */
+* {
   margin: 0;
-  display: flex;
-  flex-direction: column; /* For nav and main content */
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, monospace;
+  background-color: #0d1117; /* GitHub dark theme */
+  color: #e6edf3;
   height: 100vh;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 #flashOverlay {
@@ -18,403 +23,653 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #c0c0c0; /* Light flash for contrast */
+  background-color: #ffffff;
   opacity: 0;
   pointer-events: none;
-  z-index: 10000; /* Highest z-index */
-  transition: opacity 0.1s ease;
+  z-index: 10000;
+  transition: opacity 0.05s ease;
+  box-shadow: inset 0 0 100px rgba(255, 255, 255, 0.8);
 }
 
 #flashOverlay.active {
-  opacity: 0.8; /* Slightly transparent flash */
+  opacity: 1;
+  background-color: #ffffff;
+  box-shadow: 
+    inset 0 0 200px rgba(255, 255, 255, 1),
+    0 0 50px rgba(255, 255, 255, 0.9),
+    0 0 100px rgba(255, 255, 255, 0.7),
+    0 0 150px rgba(255, 255, 255, 0.5);
+  animation: flash-pulse 0.3s ease-out;
 }
 
-/* Navigation Bar */
-nav {
-  display: flex; /* Use flexbox for alignment */
-  justify-content: space-between; /* Space out logo and app name/LMF logo */
-  align-items: center;
-  padding: 0 20px;
-  background-color: #101010; /* Slightly darker than body */
-  border-bottom: 1px solid #333; /* Separator line */
-  height: 60px; /* Fixed height */
-  box-sizing: border-box;
-  width: 100%;
-  z-index: 1000;
-  flex-shrink: 0; /* Prevent nav from shrinking */
+@keyframes flash-pulse {
+  0% { 
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.app-logo {
-  display: flex;
-  align-items: center;
-}
 
-.app-logo img {
-  width: 40px; /* Adjusted size */
-  height: 40px;
-  margin-right: 10px;
-}
 
-.app-logo h1 {
-  color: #00ff00; /* Green text for "SnapShot" */
-  font-size: 22px;
-  margin: 0;
-  font-weight: bold;
-}
-
-.lmf-logo {
-  width: 40px; /* Adjusted size */
-  height: 40px;
-  /* Remove absolute positioning, rely on flexbox */
-}
-
-/* Main Content Area */
+/* Main Content Area - Full HD Optimized */
 main {
-  display: flex;
-  flex-grow: 1; /* Takes remaining vertical space */
-  padding: 10px;
-  gap: 10px; /* Space between panels */
-  overflow: hidden; /* Prevent main scrollbars */
-  background-color: #1e1e1e; /* Ensure consistency */
-  /* height: calc(100vh - 60px); Full height minus nav - handled by flex-grow */
-  box-sizing: border-box;
-  padding-bottom: 190px; /* Gallery height + some padding */
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 1fr 40px;
+  gap: 15px;
+  padding: 15px;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+  transition: grid-template-rows 0.3s ease;
 }
 
-/* Panel Styling (Controls, Camera, Filters) */
-section.controls-panel,
-section.camera-module,
-section.filters-panel {
-  background-color: #252526; /* Slightly lighter than body */
-  border: 1px solid #333;
-  padding: 15px;
-  box-sizing: border-box;
+main.gallery-expanded {
+  grid-template-rows: 1fr 200px;
+}
+
+/* Panel Base Styling */
+.panel {
+  background: linear-gradient(145deg, #161b22 0%, #21262d 100%);
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f78166, #58a6ff, #56d364);
+  opacity: 0.8;
+}
+
+/* Controls Panel */
+section.controls-panel {
+  grid-column: 1;
+  grid-row: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  height: 100%; /* Make panels take full height of the flex container (main) */
+  gap: 12px;
 }
 
-section.controls-panel {
-  width: 250px; /* Fixed width for controls */
-  flex-shrink: 0; /* Prevent shrinking */
+section.controls-panel h2 {
+  color: #58a6ff;
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #30363d;
+  margin-bottom: 0;
 }
 
-section.camera-module {
-  flex-grow: 1; /* Takes most of the space */
-  align-items: center; /* Center camera elements */
-  position: relative; /* For absolute positioning of capture button/timer */
+/* Filters Section within Controls Panel */
+.filters-section {
+  margin-top: 8px;
 }
 
-section.filters-panel {
-  width: 280px; /* Fixed width for filters */
-  flex-shrink: 0; /* Prevent shrinking */
-}
-
-/* Headings within panels */
-section.controls-panel h2,
-section.filters-panel h2 {
-  color: #569cd6; /* Light blue for headings */
-  margin: 0 0 10px 0;
-  font-size: 18px;
-  border-bottom: 1px solid #333;
-  padding-bottom: 5px;
-  flex-shrink: 0; /* Prevent heading from shrinking */
-}
-
-/* Controls Panel Elements */
-.controls-panel button {
-  padding: 8px 12px;
+.filters-section h3 {
+  color: #58a6ff;
   font-size: 14px;
-  font-family: inherit; /* Monospace */
-  border: 1px solid #444;
-  background-color: #333;
-  color: #ccc;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #30363d;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+/* Camera Module - Takes center space */
+section.camera-module {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  position: relative;
+}
+
+/* Gallery Panel */
+section.gallery-panel {
+  grid-column: 1 / 3;
+  grid-row: 2;
+  background: linear-gradient(145deg, #161b22 0%, #21262d 100%);
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.gallery-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #56d364, #f78166, #58a6ff);
+  opacity: 0.8;
+}
+
+/* Gallery Header */
+.gallery-header {
+  padding: 8px 12px;
+  border-bottom: 1px solid #30363d;
+  flex-shrink: 0;
+}
+
+.gallery-toggle-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #e6edf3;
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border-radius: 4px;
 }
 
-.controls-panel button:hover {
-  background-color: #45a049; /* Green hover for primary actions */
-  color: #fff;
+.gallery-toggle-btn:hover {
+  background: rgba(88, 166, 255, 0.1);
+  color: #58a6ff;
 }
 
-.controls-panel button:disabled {
-  background-color: #555;
-  color: #888;
-  cursor: not-allowed;
-  border-color: #666;
+.gallery-toggle-icon {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.gallery-panel.collapsed .gallery-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.gallery-count {
+  background: #30363d;
+  color: #58a6ff;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Gallery Content */
+.gallery-content {
+  flex: 1;
+  overflow: hidden;
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.gallery-panel.collapsed .gallery-content {
+  height: 0;
+  padding: 0 12px;
+  opacity: 0;
+}
+
+.gallery-panel:not(.collapsed) .gallery-content {
+  opacity: 1;
 }
 
 /* Timer Slider */
 .timer-slider {
   display: flex;
   flex-direction: column;
-  margin: 10px 0;
-  flex-shrink: 0; /* Prevent slider from shrinking */
+  gap: 8px;
 }
 
 .timer-slider__label {
   font-size: 14px;
-  margin-bottom: 8px;
-  color: #ccc;
+  font-weight: 500;
+  color: #e6edf3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.timer-slider__label #timer-value {
-  color: #00ff00; /* Green for timer value */
-  font-weight: bold;
+#timer-value {
+  color: #56d364;
+  font-weight: 700;
+  font-size: 14px;
+  min-width: 20px;
 }
 
 .timer-slider__container {
   position: relative;
-  height: 10px; /* Slimmer slider */
-  background-color: #101010; /* Dark track */
-  border: 1px solid #333;
+  height: 8px;
+  background-color: #21262d;
+  border-radius: 4px;
   cursor: pointer;
+  border: 1px solid #30363d;
 }
 
-.timer-slider__bar { /* Progress */
+.timer-slider__bar {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  background-color: #45a049; /* Green progress */
+  background: linear-gradient(90deg, #56d364, #58a6ff);
+  border-radius: 4px;
+  transition: width 0.2s ease;
 }
 
 .timer-slider__thumb {
   position: absolute;
-  top: -3px; /* Adjust for slimmer bar */
-  width: 16px; /* Smaller thumb */
+  top: -4px;
+  width: 16px;
   height: 16px;
-  background-color: #d4d4d4; /* Light thumb */
-  border: 1px solid #1e1e1e; /* Border to match background */
-  border-radius: 0; /* Square thumb */
+  background: #e6edf3;
+  border: 2px solid #58a6ff;
+  border-radius: 50%;
   cursor: pointer;
-  transform: translateX(-50%); /* Center thumb */
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.timer-slider__thumb:hover {
+  background: #58a6ff;
+  transform: translateX(-50%) scale(1.1);
+}
+
+/* Buttons */
+.controls-panel button,
+#capture {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  border: 2px solid #30363d;
+  background: linear-gradient(145deg, #21262d, #30363d);
+  color: #e6edf3;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+#capture {
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+.controls-panel button:hover,
+#capture:hover {
+  background: linear-gradient(145deg, #238636, #2ea043);
+  border-color: #56d364;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(86, 211, 100, 0.3);
+  transform: translateY(-2px);
+}
+
+.controls-panel button:active,
+#capture:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(86, 211, 100, 0.2);
 }
 
 /* QR Code */
 .qr-code {
-  background-color: #fff; /* White background for QR code visibility */
-  padding: 10px;
-  border: 1px solid #333;
-  margin-top: auto; /* Push to bottom of controls panel */
-  flex-shrink: 0; /* Prevent QR code from shrinking */
+  background: linear-gradient(145deg, #ffffff, #f6f8fa);
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 2px solid #d0d7de;
 }
 
-.qr-code img {
-  width: 100%;
-  height: auto; /* Maintain aspect ratio */
-  display: block;
+#qr-code-container {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 5px;
+}
+
+#qr-code-container canvas {
+  border-radius: 4px;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .qr-code p {
-  color: #1e1e1e; /* Dark text on white background */
-  text-align: center;
-  margin: 5px 0 0 0;
-  font-size: 12px;
+  color: #24292f;
+  font-weight: 600;
+  font-size: 11px;
+  margin: 0;
 }
 
-/* Camera Module Elements */
-#video, #image-preview {
+/* Video and Image Preview */
+#video,
+#image-preview {
   width: 100%;
-  max-width: 720px; /* Max width for camera feed */
-  aspect-ratio: 4/3;
-  background-color: #000; /* Black background for video area */
-  border: 1px solid #333;
-  object-fit: cover;
-  flex-shrink: 0; /* Prevent video from shrinking if space is tight */
+  max-width: 1200px;
+  height: auto;
+  max-height: 800px;
+  border-radius: 12px;
+  border: 3px solid #30363d;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  background: #000;
 }
 
 #image-preview {
-  display: none; /* Initially hidden */
-  background-size: contain; /* Ensure whole image is visible */
-  background-repeat: no-repeat;
-  background-position: center;
+  display: none;
+  object-fit: cover;
 }
 
-#capture {
-  padding: 10px 15px;
-  font-size: 16px;
-  font-family: inherit;
-  border: 1px solid #444;
-  background-color: #c9302c; /* Red for capture (like a record button) */
-  color: #fff;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: background-color 0.2s ease;
-  width: calc(100% - 0px); /* Adjusted to be closer to video width within its padding */
-  max-width: 720px; 
-  box-sizing: border-box;
-  margin-top: 10px;
-  flex-shrink: 0; /* Prevent button from shrinking */
-}
-
-#capture:hover {
-  background-color: #ac2925; /* Darker red */
-}
-
-#capture:disabled {
-  background-color: #555;
-  color: #888;
-  cursor: not-allowed;
-  border-color: #666;
-}
-
-#timer { /* Timer progress bar on capture button/video */
-  position: absolute;
-  bottom: 10px; /* Position relative to camera-module's padding */
-  left: 15px; /* Align with camera-module's padding */
-  right: 15px; /* Align with camera-module's padding */
-  width: calc(100% - 30px); /* Span across, considering padding */
-  max-width: calc(720px - 30px); /* Max width considering padding */
-  height: 5px;
-  background-color: #00ff00; /* Green progress */
-  z-index: 10;
-  transform: scaleX(0); /* Initial width 0, use transform for animation */
-  transform-origin: left;
-  transition: transform 0.1s linear;
-}
-
-
-/* Filters Panel Elements */
-section.filters-panel {
-  align-items: center; /* Center filter items */
-  overflow-y: auto; /* Allow scrolling if filters exceed height */
-}
-
-.filters-panel .filter {
-  width: 100px;
-  height: 100px; /* Keep square */
-  border: 1px solid #333;
-  cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-  position: relative;
-  background-color: #101010; /* Dark background for filter preview */
-  overflow: hidden; /* Ensure span text doesn't overflow */
-  flex-shrink: 0; /* Prevent filters from shrinking */
-  margin-bottom: 10px; /* Space between filters */
-}
-
-.filters-panel .filter:hover {
-  border-color: #00ff00; /* Green border on hover */
-  transform: scale(1.05);
-}
-
-.filters-panel .filter.active {
-  border-color: #569cd6; /* Light blue for active filter */
-  box-shadow: 0 0 5px #569cd6;
-}
-
-.filters-panel .filter span {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
-  color: #ccc;
-  text-align: center;
-  font-size: 12px;
-  padding: 3px 0;
-  box-sizing: border-box;
-}
-
-/* Gallery Panel (Bottom Strip) */
-section.gallery-panel {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 180px; /* Height for the gallery strip */
-  background-color: #101010; /* Darker background */
-  border-top: 1px solid #333;
-  padding: 10px;
-  box-sizing: border-box;
-  z-index: 900; /* Below nav, above main content if it overlaps */
-  display: flex; /* To align #photos container */
-  align-items: center;
-}
-
-#photos {
+/* Camera Controls */
+.camera-controls {
   display: flex;
-  gap: 10px;
-  overflow-x: auto; /* Horizontal scroll */
-  overflow-y: hidden;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  position: relative;
+}
+
+/* Camera Switch Button - Now in sidebar */
+.camera-switch-btn {
   width: 100%;
-  height: 100%; /* Fill gallery-panel height */
-  padding-bottom: 10px; /* Space for scrollbar */
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #30363d, #21262d);
+  border: 2px solid #484f58;
+  color: #e6edf3;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.camera-switch-btn:hover {
+  background: linear-gradient(145deg, #484f58, #30363d);
+  border-color: #58a6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
+}
+
+.camera-switch-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Capture Button */
+#capture {
+  font-size: 18px;
+  padding: 15px 40px;
+  min-width: 200px;
+}
+
+/* Timer Display */
+#timer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 120px;
+  font-weight: 900;
+  color: #f85149;
+  text-shadow: 0 0 20px rgba(248, 81, 73, 0.8);
+  z-index: 100;
+  display: none;
+}
+
+/* Filter Styling with Icons */
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  background: linear-gradient(145deg, #21262d, #30363d);
+  border: 2px solid #30363d;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  font-size: 11px;
+}
+
+.filter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.filter:hover::before {
+  left: 100%;
+}
+
+.filter:hover {
+  background: linear-gradient(145deg, #30363d, #484f58);
+  border-color: #58a6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(88, 166, 255, 0.2);
+}
+
+.filter.active {
+  background: linear-gradient(145deg, #0d419d, #1f6feb);
+  border-color: #58a6ff;
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(88, 166, 255, 0.4);
+}
+
+/* Filter Icons */
+.filter-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #58a6ff;
+  border-radius: 4px;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.filter[data-filter="none"] .filter-icon {
+  background: #6e7681;
+}
+
+.filter[data-filter="grayscale(100%)"] .filter-icon {
+  background: #656d76;
+}
+
+.filter[data-filter="sepia(100%)"] .filter-icon {
+  background: #bc8b00;
+}
+
+.filter[data-filter="invert(100%)"] .filter-icon {
+  background: #f85149;
+}
+
+.filter span {
+  font-size: 10px;
+  font-weight: 600;
+  flex-grow: 1;
+}
+
+/* Gallery Photos Grid */
+#photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .photo {
   position: relative;
-  flex-shrink: 0; /* Prevent photos from shrinking */
-  border: 1px solid #444;
+  background: #21262d;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #30363d;
+  transition: all 0.3s ease;
+  aspect-ratio: 1;
 }
 
 .photo:hover {
-  cursor: zoom-in;
-  border-color: #00ff00;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: #58a6ff;
 }
 
 .photo img {
-  width: auto; /* Maintain aspect ratio */
-  height: 130px; /* Fixed height for thumbnails */
-  display: block; /* Remove extra space below image */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-/* Buttons on photo (Download/Delete) */
+.photo:hover img {
+  transform: scale(1.05);
+}
+
+/* Photo Action Buttons */
 .buttons {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(25, 25, 26, 0.8); /* Semi-transparent dark */
+  top: 8px;
+  right: 8px;
   display: flex;
-  justify-content: space-around;
-  padding: 2px 0;
-  opacity: 0; /* Hidden by default */
-  transition: opacity 0.2s ease;
+  gap: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .photo:hover .buttons {
-  opacity: 1; /* Show on hover */
+  opacity: 1;
 }
 
 .buttons button {
-  background: none;
+  width: 32px;
+  height: 32px;
   border: none;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 6px;
   cursor: pointer;
-  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
 }
 
-.buttons img { /* Icons for buttons */
-  width: 18px;
-  height: 18px;
-  filter: invert(80%); /* Make icons light */
+.buttons button:hover {
+  background: rgba(88, 166, 255, 0.9);
+  transform: scale(1.1);
 }
 
-.buttons button:hover img {
-  filter: invert(100%) drop-shadow(0 0 3px #00ff00); /* Green glow on hover */
+.buttons img {
+  width: 16px;
+  height: 16px;
+  filter: invert(1);
 }
 
-/* Custom Scrollbars for Webkit Browsers (e.g., Chrome, Safari) */
+/* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e1e1e; /* Dark track */
+  background: #161b22;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #555; /* Grey thumb */
-  border: 1px solid #1e1e1e; /* Border to match track */
+  background: #30363d;
+  border-radius: 4px;
+  border: 2px solid #161b22;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #777; /* Lighter grey on hover */
+  background: #484f58;
+}
+
+/* Responsive Design for smaller screens */
+@media (max-width: 1600px) {
+  main {
+    grid-template-columns: 280px 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 1200px) {
+  main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 40px;
+  }
+  
+  main.gallery-expanded {
+    grid-template-rows: auto auto 180px;
+  }
+  
+  section.camera-module {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  
+  section.controls-panel {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  section.gallery-panel {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  
+  .camera-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
