@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #fafafa;
+  --fg: #18181b;
+  --muted: #52525b;
+  --surface: #f4f4f5;
+  --surface-elevated: #ffffff;
+  --border: #e4e4e7;
+  --primary: #d90429;
+  --primary-hover: #b80320;
+  --ring: rgba(217, 4, 41, 0.3);
+}
+
+[data-theme="dark"] {
+  --bg: #0a0a0b;
+  --fg: #fafafa;
+  --muted: #a1a1aa;
+  --surface: #18181b;
+  --surface-elevated: #27272a;
+  --border: #3f3f46;
+  --primary: #ef233c;
+  --primary-hover: #d90429;
+  --ring: rgba(239, 35, 60, 0.3);
+}
+
+body {
+  color: var(--fg);
+  background: var(--bg);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+#flash-overlay {
+  position: fixed;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.05s ease;
+}
+
+#flash-overlay.active {
+  opacity: 1;
+  animation: flash-pulse 0.3s ease-out;
+}
+
+@keyframes flash-pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+@keyframes countdown-ring {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 283; }
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: 2px solid var(--surface-elevated);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: 2px solid var(--surface-elevated);
+  box-shadow: 0 0 0 3px var(--ring);
+}
